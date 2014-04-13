@@ -1,0 +1,89 @@
+int pinin1=A0;   // Input pin for sensor 1
+int pinin2=A1;   //Input pin for sensor 2
+int stpin1=0,stpin2=0;
+int out1=11;
+int out2=12;
+int out3=13;
+int out4=9;
+int sensorValue1=0;
+int sensorValue2=0;
+int a,s,set=0,rev=0;
+
+void setup()
+  {
+    pinMode(out1,OUTPUT);
+    pinMode(out2,OUTPUT);
+    pinMode(out3,OUTPUT);
+    pinMode(out4,OUTPUT);
+   }
+void loop()            // Storing the pin input to the respective variables and comparing the values
+{
+  do{ 
+  sensorValue1 = analogRead(pinin1);    
+   sensorValue2=analogRead(pinin2);
+   if(sensorValue1<=100)
+     stpin1=HIGH;
+   else
+     stpin1=LOW;
+   sensorValue2 = analogRead(pinin2);    
+   if(sensorValue2<=100)
+      stpin2=HIGH; 
+   else
+      stpin2=LOW;
+
+   if (stpin1==HIGH && stpin2==HIGH) {
+     digitalWrite(out1,LOW);
+     digitalWrite(out2,LOW);
+     digitalWrite(out3,LOW);
+     s=0;
+     delay(10);
+   }
+   else if(stpin1==LOW && stpin2== LOW){     //Comparing two stored sensor values
+     
+     digitalWrite(out1,HIGH);
+     digitalWrite(out2,HIGH);
+     digitalWrite(out3,LOW);
+     delay(10);
+     a++;
+   }
+   else
+      {
+        digitalWrite(out1,LOW);
+        digitalWrite(out2,LOW);
+        if(rev==0){
+          digitalWrite(out3,HIGH);
+          digitalWrite(out4,LOW);
+          delay(100);
+          set++;
+        }
+        else{
+           digitalWrite(out4,HIGH);
+           digitalWrite(out3,LOW);
+           delay(100);
+           set++;
+         }
+         if(set==50)
+           {
+             rev=!rev;
+             set=0;
+           }
+        delay(10); 
+      }
+}while(a<500);
+if(a==500)
+{
+        digitalWrite(out1,LOW);
+        digitalWrite(out2,HIGH);
+        digitalWrite(out3,LOW);
+        delay(1500);
+        a=0;
+        s++;
+}
+if(s==4)
+   {
+     digitalWrite(out1,LOW);
+     digitalWrite(out2,LOW);
+     digitalWrite(out3,LOW);
+     exit(0);
+   }
+}
